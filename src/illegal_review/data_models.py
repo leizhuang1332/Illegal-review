@@ -18,8 +18,8 @@ class VideoMetadata(BaseModel):
     width: int = Field(description="宽度（像素）")
     height: int = Field(description="高度（像素）")
     codec: str = Field(description="视频编码格式")
-    audio_codec: Optional[str] = Field(description="音频编码格式")
-    bitrate: Optional[int] = Field(description="比特率（bps）")
+    audio_codec: Optional[str] = Field(default=None, description="音频编码格式")
+    bitrate: Optional[int] = Field(default=None, description="比特率（bps）")
 
 
 class SourceInfo(BaseModel):
@@ -72,7 +72,7 @@ class TranscriptSegment(BaseModel):
     text: str = Field(description="文本内容")
     start: float = Field(description="开始时间（秒）")
     end: float = Field(description="结束时间（秒）")
-    speaker: Optional[str] = Field(description="说话人标识")
+    speaker: Optional[str] = Field(default=None, description="说话人标识")
 
 
 class OCRResult(BaseModel):
@@ -86,13 +86,13 @@ class OCRResult(BaseModel):
 class PreprocessingResult(BaseModel):
     """预处理层输出结果"""
     input_id: UUID = Field(description="追踪ID")
-    frames: List[FrameData] = Field(description="采样后的帧序列")
-    audio: AudioData = Field(description="音频数据")
-    transcript: str = Field(description="完整转录文本")
-    transcript_segments: List[TranscriptSegment] = Field(description="分段转录结果")
-    ocr_results: List[OCRResult] = Field(description="OCR识别结果")
-    metadata: VideoMetadata = Field(description="处理元数据")
-    processing_stats: Dict[str, float] = Field(description="处理统计信息")
+    frames: Optional[List[FrameData]] = Field(default=None, description="采样后的帧序列")
+    audio: Optional[AudioData] = Field(default=None, description="音频数据")
+    transcript: Optional[str] = Field(default=None, description="完整转录文本")
+    transcript_segments: Optional[List[TranscriptSegment]] = Field(default=None, description="分段转录结果")
+    ocr_results: Optional[List[OCRResult]] = Field(default=None, description="OCR识别结果")
+    metadata: Optional[VideoMetadata] = Field(default=None, description="处理元数据")
+    processing_stats: Dict[str, float] = Field(default_factory=dict, description="处理统计信息")
 
 
 # 分析引擎层数据模型

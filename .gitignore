@@ -71,3 +71,4 @@ docker-compose.override.yml
 models/
 
 .pytest_cache/
+.superpowers/

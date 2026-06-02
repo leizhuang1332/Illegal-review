@@ -1,9 +1,14 @@
 """
 预处理层模块
 
-采用四阶段流水线架构：
-1. 视频解码：使用FFmpeg解码为帧序列
-2. 音频提取：提取音频轨道，转换为PCM格式
-3. 帧采样优化：智能采样策略，场景变化检测
-4. 内容识别：语音转写(Whisper)、OCR识别(EasyOCR)
+DAG Pipeline 架构：
+1. 视频解码 (DecodeStage)：FFmpeg pipe 模式解码为帧序列
+2. 音频提取 (AudioExtractStage)：提取音频 → 16kHz 单声道 PCM
+3. 帧采样 (FrameSampleStage)：自适应间隔 + 场景变化检测
+4. 语音转写 (SpeechStage)：Whisper small 模型
+5. 文字识别 (OCRStage)：EasyOCR 中英文
 """
+
+from src.illegal_review.preprocessing_layer.service import PreprocessingService
+
+__all__ = ["PreprocessingService"]

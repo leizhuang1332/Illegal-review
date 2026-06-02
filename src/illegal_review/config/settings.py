@@ -62,21 +62,31 @@ class InputLayerConfig:
 
 @dataclass
 class PreprocessingConfig:
-    """预处理层配置"""
-    frame_sample_interval_short: int = 1  # 短视频采样间隔（秒）
-    frame_sample_interval_long: int = 2   # 长视频采样间隔（秒）
-    short_video_threshold: int = 60       # 短视频阈值（秒）
-    scene_change_threshold: int = 30      # 场景变化检测阈值
-    audio_sample_rate: int = 16000        # 音频采样率
+    """预处理层配置 — 合并原 DecodeExtractConfig"""
+
+    # --- 解码 ---
+    ffmpeg_path: Optional[str] = None           # None = 自动 PATH 查找
+
+    # --- 帧采样 ---
+    frame_sample_interval_short: int = 1        # <60s 短视频：每 N 秒 1 帧
+    frame_sample_interval_long: int = 2         # >=60s 长视频：每 N 秒 1 帧
+    short_video_threshold: int = 60             # 短视频阈值（秒）
+    scene_change_threshold: int = 30            # 场景变化检测像素差均值阈值
+
+    # --- 帧存储 ---
+    frame_store_memory_limit: int = 9000        # 内存中最大帧数，超出 spill 磁盘
+    frame_encode_format: str = "jpeg"           # 帧编码格式
+    frame_encode_quality: int = 90              # JPEG quality (1-100)
+
+    # --- 音频 ---
+    audio_sample_rate: int = 16000              # 音频重采样目标
+    whisper_model: str = "small"                # Whisper 模型大小
+
+    # --- OCR ---
     ocr_languages: List[str] = field(default_factory=lambda: ["ch_sim", "en"])
 
-
-@dataclass
-class DecodeExtractConfig:
-    """解码提取层配置"""
-    ffmpeg_path: Optional[str] = None
-    enable_parallel: bool = True
-    temp_file_cleanup: bool = True
+    # --- 临时文件 ---
+    temp_cleanup_enabled: bool = True           # 处理完成后自动清理
 
 
 @dataclass
@@ -90,7 +100,7 @@ class ImageRecognitionConfig:
 @dataclass
 class AudioAnalysisConfig:
     """音频分析引擎配置"""
-    whisper_model: str = "base"
+    whisper_model: str = "small"
     enable_diarization: bool = False
     sensitive_detection_enabled: bool = True
 
@@ -161,7 +171,6 @@ class SystemConfig:
     """系统主配置"""
     input_layer: InputLayerConfig = field(default_factory=InputLayerConfig)
     preprocessing: PreprocessingConfig = field(default_factory=PreprocessingConfig)
-    decode_extract: DecodeExtractConfig = field(default_factory=DecodeExtractConfig)
     image_recognition: ImageRecognitionConfig = field(default_factory=ImageRecognitionConfig)
     audio_analysis: AudioAnalysisConfig = field(default_factory=AudioAnalysisConfig)
     text_analysis: TextAnalysisConfig = field(default_factory=TextAnalysisConfig)
