@@ -1,0 +1,129 @@
+src/illegal_review/input_layer/rate_limiter.py
+  s_5f27393be19668::t_3146886b242c80 1-31
+src/illegal_review/input_layer/kafka_client.py
+  s_5f27393be19668::t_2b7f80b5394c04 1-91
+src/illegal_review/input_layer/url_fetcher.py
+  s_5f27393be19668::t_9752ba29f82405 87,93-94,96-102
+  s_5f27393be19668::t_d6ed5f0bf42666 1-86,88-92,95,103-116
+tests/input_layer/test_router.py
+  s_5f27393be19668::t_7eee61e1c05be0 1-26
+tests/input_layer/test_format_checker.py
+  s_9ff041d820fc1e::t_0f4a7a1e979032 1-45
+tests/input_layer/test_service.py
+  s_5f27393be19668::t_2dfa07de2118e0 1-35
+src/illegal_review/cli.py
+  s_5f27393be19668::t_648ce3f4506037 40
+  s_5f27393be19668::t_bd02cc6fba7235 95-101
+  s_5f27393be19668::t_11f86b47101e89 11-12
+tests/input_layer/test_live_stream.py
+  s_5f27393be19668::t_0ba1136e1e26b1 1-34
+tests/input_layer/__init__.py
+  s_9ff041d820fc1e::t_9d1969e850674f 1
+tests/input_layer/test_upload_handler.py
+  s_5f27393be19668::t_51a5e5a216ac61 16
+  s_5f27393be19668::t_58d5b8c4048af6 1-15,17-46
+src/illegal_review/input_layer/service.py
+  s_5f27393be19668::t_1cc0a5194c2d7b 1-103
+src/illegal_review/input_layer/live_stream.py
+  s_5f27393be19668::t_343a984e862d10 1-51
+tests/input_layer/test_url_fetcher.py
+  s_5f27393be19668::t_cea295cb3f3d86 3,15,36,41,45,60-61,67,90,99,107,114,122,129,137
+  s_5f27393be19668::t_88c81f08c31272 1-2,4-14,16-35,37-40,42-44,46-59,62-66,68-89,91-98,100-106,108-113,115-121,123-128,130-136,138-140
+src/illegal_review/data_models.py
+  s_9ff041d820fc1e::t_e7e2367ddc4e5f 42,46-47,49
+  s_9ff041d820fc1e::t_05aae656666791 44
+docs/superpowers/specs/2026-06-02-input-layer-design.md
+  s_5f27393be19668::t_d67a653b422312 1-235
+src/illegal_review/input_layer/metadata.py
+  s_5f27393be19668::t_4852d5669eec46 21-22
+  s_5f27393be19668::t_59ebb5c4b6600c 10
+  s_5f27393be19668::t_83a33f29253396 23-25
+  s_5f27393be19668::t_7586c0c8d70825 1-9,11-20,26-87,100-102
+  s_5f27393be19668::t_9e7e9ab4ff58e8 88-99
+src/illegal_review/input_layer/__init__.py
+  s_5f27393be19668::t_e0798b09a5296d 13-17
+src/illegal_review/input_layer/quota_manager.py
+  s_5f27393be19668::t_c18c0765713e6c 60
+  s_5f27393be19668::t_a169d3fdc84cdd 9
+  s_5f27393be19668::t_b1365f0b4219e0 1-8,10-59,61-66
+tests/input_layer/test_rate_limiter.py
+  s_5f27393be19668::t_d546c01ded6a94 1-27
+src/illegal_review/input_layer/router.py
+  s_5f27393be19668::t_5162fc339e8ebf 1-143
+src/illegal_review/input_layer/temp_manager.py
+  s_5f27393be19668::t_482874e3b76cd5 1-152
+tests/input_layer/test_metadata.py
+  s_5f27393be19668::t_a3bbaee8030873 25,40,56,74
+  s_5f27393be19668::t_c7293ccff83ea1 117-118
+  s_5f27393be19668::t_3e6e9c673c8773 8
+  s_5f27393be19668::t_72994d18a1319e 80-116,119-156
+  s_5f27393be19668::t_057ca81da7d88b 1-7,9-24,26-39,41-55,57-73,75-79
+src/illegal_review/input_layer/format_checker.py
+  s_9ff041d820fc1e::t_977dae27046f6b 1-62
+tests/input_layer/test_quota_manager.py
+  s_5f27393be19668::t_d9423d4104591a 26
+  s_5f27393be19668::t_8063ec47906495 65
+  s_5f27393be19668::t_9e27d7f468217b 43-64,66-77
+  s_5f27393be19668::t_9011df35580e79 1,4-25,27-42
+  s_5f27393be19668::t_53967efb3a0a8f 2-3
+src/illegal_review/config/settings.py
+  s_9ff041d820fc1e::t_c8cd7af21a0fe3 14-20,22,24-31,33-38,40-41,43-52,54-60
+  s_9ff041d820fc1e::t_2537a1bc341b28 39,42
+  s_9ff041d820fc1e::t_fdf4ca0f447f85 23,32
+  s_9ff041d820fc1e::t_aacb29ae4610b6 53
+tests/input_layer/test_temp_manager.py
+  s_5f27393be19668::t_39769c662ca633 1-36,38-43,45-50
+  s_5f27393be19668::t_bb2f62a1e712df 37,44
+src/illegal_review/input_layer/monitoring.py
+  s_5f27393be19668::t_2f4481f68f4728 1-32
+tests/input_layer/test_kafka_client.py
+  s_5f27393be19668::t_71d7c8d2ca4da1 1-21,23-39,41-44
+  s_5f27393be19668::t_54df055e4c0e5c 22
+  s_5f27393be19668::t_6523071a4bea1c 40
+docs/superpowers/plans/2026-06-02-input-layer-implementation.md
+  s_5f27393be19668::t_0438d06af4ee4d 427,509,514,595,600,615,648,685,690,705,752,823,828,843,898,975,980,997,1048,1138,1143,1158,1186,1239,1244,1259,1299,1354,1359,1374,1424,1521,1526,1540,1578,1591,1632,1741,1746,1762,1911,1922,1954,1959,1973,1991,1996
+  s_5f27393be19668::t_27f86fc05f6aae 62-420
+  s_5f27393be19668::t_1f3b5b4f0ea301 1-61
+  s_5f27393be19668::t_fe5756a503a2d1 989-996,998-1047,1049-1137,1139-1142,1144-1157,1159-1185,1187-1238,1240-1243,1245-1258,1260-1298,1300-1353,1355-1358,1360-1373,1375-1423,1425-1520,1522-1525,1527-1539,1541-1577,1579-1583
+  s_5f27393be19668::t_e1215e05136712 1584-1590,1592-1631,1633-1740,1742-1745,1747-1761,1763-1910,1912-1921,1923-1953,1955-1958,1960-1972,1974-1990,1992-1995,1997-2043
+  s_5f27393be19668::t_170c57eea1e316 421-426,428-508,510-513,515-594,596-599,601-614,616-647,649-684,686-689,691-704,706-751,753-822,824-827,829-842,844-897,899-974,976-979,981-988
+src/illegal_review/input_layer/models.py
+  s_9ff041d820fc1e::t_aefacff509e4f4 40-41
+  s_9ff041d820fc1e::t_18eeed8c25eb86 48-51
+  s_9ff041d820fc1e::t_b2fd174a41e504 80-81
+  s_9ff041d820fc1e::t_39ef9d2fe5dca9 71
+  s_9ff041d820fc1e::t_1b2bc5cfc29724 18
+  s_9ff041d820fc1e::t_d070a063ba10f6 60-61
+  s_9ff041d820fc1e::t_bf95eb9d9e29a3 92-93
+  s_9ff041d820fc1e::t_8ebba520048ca0 1-4,7-17,19-34,36-39,42-47,52-59,62-66,68-70,72-79,82-91,94-101
+  s_9ff041d820fc1e::t_44714f4ae69fc9 35
+  s_9ff041d820fc1e::t_19352ffc57da3a 67
+  s_9ff041d820fc1e::t_a4ed2a763796d5 5
+  s_9ff041d820fc1e::t_e921489d11fe57 6
+src/illegal_review/input_layer/upload_handler.py
+  s_5f27393be19668::t_47c0ed46b6dad8 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "97eb1019a6d2d1fe3ece3ee083738c85c6cccdc2",
+  "prompts": {},
+  "sessions": {
+    "s_5f27393be19668": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "16220fd0-7756-4d4e-a4cd-d76631bca6de",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    },
+    "s_9ff041d820fc1e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e9c6d7a-9389-4fc2-8763-134860b41fe8",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
