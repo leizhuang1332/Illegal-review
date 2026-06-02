@@ -1,0 +1,19 @@
+.gitignore
+  s_5f27393be19668::t_9bba47ef4bd464 72-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "5e2e0295828110236b093785025b734a3a4ad99a",
+  "prompts": {},
+  "sessions": {
+    "s_5f27393be19668": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "16220fd0-7756-4d4e-a4cd-d76631bca6de",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
