@@ -39,14 +39,14 @@ class SegmentInfo(BaseModel):
 class InputResult(BaseModel):
     """输入层输出结果"""
     input_id: UUID = Field(description="唯一标识")
-    input_type: str = Field(description="输入类型：file/url/stream/segment")
+    input_type: str = Field(description="输入类型：file/url/stream")
     source_info: SourceInfo = Field(description="源信息")
-    video_metadata: VideoMetadata = Field(description="视频元数据")
+    video_metadata: Optional[VideoMetadata] = Field(default=None, description="视频元数据")
     temp_path: str = Field(description="临时文件路径")
-    segment_info: Optional[SegmentInfo] = Field(description="片段信息")
-    status: str = Field(description="状态：success/failed")
-    error_message: Optional[str] = Field(description="错误信息")
+    status: str = Field(description="状态：pending/completed/failed")
+    error_message: Optional[str] = Field(default=None, description="错误信息")
     created_at: datetime = Field(description="创建时间")
+    processed_at: Optional[datetime] = Field(default=None, description="处理完成时间")
 
 
 # 预处理层数据模型

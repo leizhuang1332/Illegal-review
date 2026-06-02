@@ -8,6 +8,8 @@ import argparse
 import sys
 from typing import Optional
 
+from src.illegal_review.input_layer.router import router as input_router
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -35,7 +37,7 @@ def main():
     # 服务命令
     server_parser = subparsers.add_parser("server", help="启动API服务")
     server_parser.add_argument(
-        "-h", "--host",
+        "--host",
         help="服务主机",
         default="0.0.0.0"
     )
@@ -90,8 +92,13 @@ def run_audit(args):
 
 def run_server(args):
     """启动API服务"""
-    print(f"启动服务: http://{args.host}:{args.port}")
-    # TODO: 实现服务启动逻辑
+    import uvicorn
+    from fastapi import FastAPI
+
+    app = FastAPI(title="Video Review System", version="1.0.0")
+    app.include_router(input_router)
+    print(f"Starting server: http://{args.host}:{args.port}")
+    uvicorn.run(app, host=args.host, port=args.port)
 
 
 def manage_rules(args):

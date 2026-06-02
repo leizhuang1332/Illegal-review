@@ -11,10 +11,53 @@ from typing import Optional, Dict, List
 @dataclass
 class InputLayerConfig:
     """输入层配置"""
-    supported_formats: List[str] = field(default_factory=lambda: ["mp4", "avi", "mov", "flv"])
-    max_file_size: int = 1 * 1024 * 1024 * 1024  # 1GB
-    download_timeout: int = 30
+    # 格式与大小
+    supported_formats: List[str] = field(
+        default_factory=lambda: ["mp4", "avi", "mov", "flv", "mkv", "webm"]
+    )
+    max_file_size: int = 5 * 1024 * 1024 * 1024  # 5GB
+
+    # 文件路径
     temp_dir: str = "./temp"
+    temp_file_ttl_hours: int = 24
+    temp_dir_warning_threshold: float = 0.8  # 0.0-1.0 比例，0.8 = 80%
+
+    # 下载
+    download_timeout: int = 30
+    download_max_bandwidth: int = 100 * 1024 * 1024  # 100MB/s
+
+    # 分片上传
+    chunk_size: int = 5 * 1024 * 1024  # 5MB
+    concurrent_chunks: int = 3
+    upload_expiry_hours: int = 24  # 分片上传会话过期时间（小时）
+
+    # 直播流
+    live_buffer_size: int = 10        # 秒
+    live_reconnect_attempts: int = 5
+    live_reconnect_delay: int = 5
+    live_chunk_duration: int = 60     # 直播切片时长（秒）
+    live_max_duration: int = 3600     # 最大直播录制时长（秒），0 = 无限
+
+    # 限速与配额
+    global_rate_limit_rps: int = 100  # 全局每秒请求数
+    user_concurrent_limit: int = 5
+    user_daily_upload_limit: int = 50 * 1024 * 1024 * 1024  # 50GB/天
+    user_daily_request_limit: int = 1000
+
+    # 存储归档
+    archive_enabled: bool = False
+    archive_endpoint: str = ""
+    archive_bucket: str = "illegal-review-input"
+
+    # Kafka 故障容错
+    kafka_fallback_dir: str = "./temp/kafka_fallback"  # 相对于 temp_dir 的 Kafka 回退目录
+    kafka_fallback_max_size: int = 10 * 1024 * 1024 * 1024  # 10GB
+    kafka_fallback_max_files: int = 1000
+    kafka_retry_interval: int = 10  # 秒
+
+    # FFprobe
+    ffprobe_timeout: int = 20
+    ffprobe_retries: int = 1
 
 
 @dataclass
