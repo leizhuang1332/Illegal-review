@@ -1,0 +1,28 @@
+architecture/03-输入层设计.md
+  s_9ff041d820fc1e::t_530efba2af8977 405-406,408
+  s_9ff041d820fc1e::t_5e7cbe5dd876f8 415
+  s_9ff041d820fc1e::t_311fe7420a1c72 95-98
+  s_9ff041d820fc1e::t_ccc7ca0bd2f985 139-140
+  s_9ff041d820fc1e::t_759eae34b2f23e 427,431-434
+  s_9ff041d820fc1e::t_4476860148ca7b 92
+  s_9ff041d820fc1e::t_4d3fb7ebed97f2 352
+  s_9ff041d820fc1e::t_cdd786bd20abe1 449
+  s_9ff041d820fc1e::t_de9dc67d6f839c 611
+  s_9ff041d820fc1e::t_cf9d8ba5e06856 243
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "051d5c42a49ecd9ea82d995c9641313e09bd803a",
+  "prompts": {},
+  "sessions": {
+    "s_9ff041d820fc1e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e9c6d7a-9389-4fc2-8763-134860b41fe8",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
