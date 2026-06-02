@@ -1,0 +1,27 @@
+docs/superpowers/specs/2026-06-02-text-analysis-engine-design.md
+  s_f775a5dd3137d3::t_bc322483630fb6 479-496,506,508-513
+  s_f775a5dd3137d3::t_47ac585bfa26c0 943
+  s_f775a5dd3137d3::t_06ed2e1634ed44 645,665-737
+  s_f775a5dd3137d3::t_818dfc301005e2 904,912,914
+  s_f775a5dd3137d3::t_71001b89ab64e4 948
+  s_f775a5dd3137d3::t_ee4cc970b8b8c7 739-796,799,801,825,839
+  s_f775a5dd3137d3::t_466a6e66a3f161 888,890
+  s_f775a5dd3137d3::t_6a4e4b4e05bb33 866
+  s_f775a5dd3137d3::t_2b294dde3d7a33 927,935,937
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "4e66585e2b45457b286977c8589a8af11cdbe6dd",
+  "prompts": {},
+  "sessions": {
+    "s_f775a5dd3137d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "40da5f04-0c38-485d-b682-28c4fc5cfba6",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
