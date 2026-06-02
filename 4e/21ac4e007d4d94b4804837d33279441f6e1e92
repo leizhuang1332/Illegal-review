@@ -1,0 +1,20 @@
+src/illegal_review/analysis_engine_layer/text_analysis/analyzer.py
+  s_f775a5dd3137d3::t_b513e3f95a496a 28-36,43-44
+  s_f775a5dd3137d3::t_9d76e1a8a138eb 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "4e21ac4e007d4d94b4804837d33279441f6e1e92",
+  "prompts": {},
+  "sessions": {
+    "s_f775a5dd3137d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "40da5f04-0c38-485d-b682-28c4fc5cfba6",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
