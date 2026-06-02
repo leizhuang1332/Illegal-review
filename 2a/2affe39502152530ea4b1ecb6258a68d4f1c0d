@@ -1,0 +1,20 @@
+docs/superpowers/specs/2026-06-02-preprocessing-layer-design.md
+  s_adea5049209c98::t_9c94ebbb377c0a 66-72
+  s_adea5049209c98::t_f7db9fbb7353ad 1-65,73-265
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "2a2affe39502152530ea4b1ecb6258a68d4f1c0d",
+  "prompts": {},
+  "sessions": {
+    "s_adea5049209c98": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c75ff0a7-35df-4066-9a7b-444163bdd782",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
