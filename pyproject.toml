@@ -1,0 +1,48 @@
+[project]
+name = "illegal-review"
+version = "1.0.0"
+description = "视频违规审核系统 - 规则+AI双引擎架构"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+authors = [
+    { name = "Illegal Review Team", email = "team@example.com" }
+]
+dependencies = [
+    "fastapi>=0.100",
+    "uvicorn>=0.23",
+    "pydantic>=2.0",
+    "python-multipart>=0.0.6",
+    "ffmpeg-python>=0.2",
+    "opencv-python>=4.8",
+    "openai-whisper>=20231117",
+    "librosa>=0.10",
+    "easyocr>=1.7",
+    "transformers>=4.35",
+    "torch>=2.1",
+    "psycopg2-binary>=2.9",
+    "redis>=5.0",
+    "minio>=7.2",
+    "confluent-kafka>=2.2",
+    "prometheus-client>=0.19",
+    "opentelemetry-api>=1.18",
+    "opentelemetry-sdk>=1.18",
+    "python-dotenv>=1.0",
+    "pytest>=7.4",
+    "pytest-asyncio>=0.21",
+    "pytest-cov>=4.1",
+    "black>=23.10",
+    "isort>=5.12",
+    "flake8>=6.1",
+]
+
+[project.scripts]
+illegal-review = "illegal_review.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"

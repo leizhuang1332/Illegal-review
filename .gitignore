@@ -1,0 +1,71 @@
+# 虚拟环境
+.venv/
+env/
+venv/
+ENV/
+
+# Python 编译文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 临时文件
+*.tmp
+*.temp
+temp/
+tmp/
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 日志文件
+*.log
+logs/
+
+# 测试覆盖报告
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+pytest.xml
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 缓存文件
+.cache/
+.DS_Store
+Thumbs.db
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 构建产物
+build/
+dist/
+*.whl
+
+# Jupyter 笔记本
+.ipynb_checkpoints/
+
+# Docker
+docker-compose.override.yml
+
+# 模型文件（大型文件不应放入版本控制）
+*.pt
+*.pth
+*.onnx
+*.bin
+models/
