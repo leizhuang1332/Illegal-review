@@ -100,23 +100,17 @@ src/
 ### 安装依赖
 
 ```bash
-uv install
+uv sync
 ```
 
 ### 运行命令
 
 ```bash
-# 审核视频
-illegal-review audit /path/to/video.mp4
-
 # 启动API服务
-illegal-review server
+python -m src.illegal_review.cli server --host localhost --port 9000
 
-# 管理规则
-illegal-review rule list
-
-# 管理模型
-illegal-review model list
+# 访问API 文档
+访问 `http://localhost:9000/docs#/
 ```
 
 ## 配置说明
