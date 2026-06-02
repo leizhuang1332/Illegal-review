@@ -476,17 +476,24 @@ class TextAnalyzer:
     async def analyze(self, text: str, source: str) -> SourceAnalysis:
         cleaned = self._preprocessor.process(text)
 
-        embed_task = self._semantic.encode(cleaned.text)
-        sensitive_task = self._sensitive.match_all(cleaned.text)
-        sentiment_task = self._sentiment.analyze(cleaned.text)
-        ner_task = self._ner.recognize(cleaned.text)
-        classify_task = self._classifier.classify(cleaned.text)
+        # 并行执行，单个模块失败不阻断其他
+        results = await asyncio.gather(
+            self._semantic.encode(cleaned.text),
+            self._sensitive.match_all(cleaned.text),
+            self._sentiment.analyze(cleaned.text),
+            self._ner.recognize(cleaned.text),
+            self._classifier.classify(cleaned.text),
+            return_exceptions=True,
+        )
 
-        (embedding, sensitive_words, sentiment_score, entities, category) = \
-            await asyncio.gather(
-                embed_task, sensitive_task, sentiment_task,
-                ner_task, classify_task
-            )
+        embed_result, sensitive_result, sentiment_result, ner_result, classify_result = results
+        errors: List[str] = []
+
+        embedding = self._unwrap(embed_result, errors, "semantic")
+        sensitive_words = self._unwrap(sensitive_result, errors, "sensitive") or []
+        sentiment_score = self._unwrap(sentiment_result, errors, "sentiment")
+        entities = self._unwrap(ner_result, errors, "ner") or []
+        category = self._unwrap(classify_result, errors, "classification")
 
         return SourceAnalysis(
             source=source,
@@ -496,7 +503,14 @@ class TextAnalyzer:
             sentiment_score=sentiment_score,
             entities=entities,
             category=category,
+            errors=errors,
         )
+
+    def _unwrap(self, result, errors, module):
+        if isinstance(result, Exception):
+            errors.append(f"{module}: {result}")
+            return None
+        return result
 ```
 
 ### 5.8 Service 层（service.py）
@@ -628,7 +642,7 @@ class TextAdaptor:
         return transcript[:max_length]
 ```
 
-### 5.11 异常体系（exceptions.py）
+### 5.11 异常体系与错误处理（exceptions.py）
 
 ```python
 class TextAnalysisError(Exception):
@@ -648,11 +662,143 @@ class ClassificationError(TextAnalysisError):
     pass
 ```
 
+### 5.12 核心分析器中的错误处理
+
+`TextAnalyzer.analyze()` 使用 `asyncio.gather(return_exceptions=True)` 确保单个模块失败不阻断其他模块：
+
+```python
+class TextAnalyzer:
+    """文本分析器 — 串联所有模块，并行执行互不依赖的分析"""
+
+    def __init__(self, config: TextAnalysisConfig):
+        self._preprocessor = TextPreprocessor()
+        self._semantic = SemanticEncoder(config)
+        self._sensitive = SensitiveMatcher(config)
+        self._sentiment = SentimentAnalyzer(config)
+        self._ner = NERecognizer(config)
+        self._classifier = TextClassifier(config)
+
+    async def analyze(self, text: str, source: str) -> SourceAnalysis:
+        cleaned = self._preprocessor.process(text)
+
+        # 并行执行5个模块，单个失败不影响其他
+        results = await asyncio.gather(
+            self._semantic.encode(cleaned.text),
+            self._sensitive.match_all(cleaned.text),
+            self._sentiment.analyze(cleaned.text),
+            self._ner.recognize(cleaned.text),
+            self._classifier.classify(cleaned.text),
+            return_exceptions=True,
+        )
+
+        embed_result, sensitive_result, sentiment_result, ner_result, classify_result = results
+
+        errors: List[str] = []
+
+        # 逐个处理结果，异常则降级为 None/[] 并记录错误
+        embedding = self._unwrap(embed_result, errors, "semantic_encoding")
+        sensitive_words = self._unwrap(sensitive_result, errors, "sensitive_matching") or []
+        sentiment_score = self._unwrap(sentiment_result, errors, "sentiment_analysis")
+        entities = self._unwrap(ner_result, errors, "ner") or []
+        category = self._unwrap(classify_result, errors, "classification")
+
+        return SourceAnalysis(
+            source=source,
+            text_length=len(text),
+            semantic_embedding=embedding,
+            sensitive_words=sensitive_words,
+            sentiment_score=sentiment_score,
+            entities=entities,
+            category=category,
+            errors=errors,
+        )
+
+    def _unwrap(self, result: Any, errors: List[str], module: str) -> Any:
+        """工具方法：异常→None + 记录错误"""
+        if isinstance(result, Exception):
+            errors.append(f"{module}: {result}")
+            return None
+        return result
+```
+
+**SourceAnalysis 新增 errors 字段**：
+
+```python
+class SourceAnalysis(BaseModel):
+    """单来源文本分析结果"""
+    source: str = Field(description="来源：ocr / transcript")
+    text_length: int = Field(description="文本长度")
+    semantic_embedding: Optional[List[float]] = Field(default=None, description="语义嵌入 (768维)")
+    sensitive_words: List[SensitiveWord] = Field(default_factory=list, description="敏感词列表")
+    sentiment_score: Optional[float] = Field(default=None, description="情感分数 -1~1")
+    entities: List[Entity] = Field(default_factory=list, description="实体列表")
+    category: Optional[CategoryResult] = Field(default=None, description="分类结果")
+    errors: List[str] = Field(default_factory=list, description="各模块处理错误记录")
+```
+
 ---
 
-## 6. 并行执行与性能
+## 6. 降级逻辑
 
-### 6.1 执行模型
+### 6.1 降级原则
+
+| 原则 | 说明 |
+|------|------|
+| **模块级隔离** | 单个分析模块失败不影响其他模块 |
+| **来源级隔离** | OCR 失败不影响语音分析，反之亦然 |
+| **None 语义** | 所有失败场景统一返回 None（非空对象/空列表） |
+| **错误可追溯** | 所有降级原因记录在 `SourceAnalysis.errors` 中 |
+
+### 6.2 模块级降级矩阵
+
+| 失败模块 | semantic_embedding | sensitive_words | sentiment_score | entities | category | 整体 |
+|----------|:-:|:-:|:-:|:-:|:-:|------|
+| 预处理 | None | [] | None | [] | None | **跳过该来源** |
+| 语义编码 | None | ✅ | ✅ | ✅ | ✅ | 部分降级 |
+| 敏感词匹配 | ✅ | [] | ✅ | ✅ | ✅ | 部分降级 |
+| 情感分析 | ✅ | ✅ | None | ✅ | ✅ | 部分降级 |
+| NER | ✅ | ✅ | ✅ | [] | ✅ | 部分降级 |
+| 分类 | ✅ | ✅ | ✅ | ✅ | None | 部分降级 |
+
+### 6.3 来源级降级矩阵
+
+| 场景 | OCR 结果 | 语音结果 | violations | api 返回 |
+|------|:--------:|:--------:|:----------:|:--------:|
+| OCR + 语音都正常 | ✅ | ✅ | 合并两源 | 正常 |
+| 只有 OCR 文本 | ✅ | None | 仅 OCR | `transcript=None` |
+| 只有语音文本 | None | ✅ | 仅语音 | `ocr=None` |
+| 都无文本 | None | None | [] | 空结果, `errors` 记录原因 |
+
+### 6.4 实现机制
+
+```python
+# TextAnalyzer.analyze() — 模块级隔离
+# 使用 asyncio.gather(return_exceptions=True) 捕获单个模块异常
+results = await asyncio.gather(
+    ...,
+    return_exceptions=True,
+)
+# 每个结果解包：异常 → None + 记录 errors
+```
+
+### 6.5 构造时错误的处理
+
+模型加载失败（如 BERT 下载失败、CUDA OOM）在 `TextAnalysisService.__init__()` 时直接抛出异常：
+
+| 失败场景 | 处理方式 | 恢复手段 |
+|----------|----------|----------|
+| BERT 模型加载失败 | Service 构造抛 `OSError` | 检查网络/模型路径 |
+| NER 模型加载失败 | Service 构造抛 `OSError` | 检查网络/模型路径 |
+| 敏感词表文件缺失 | 记录 warning，使用空词表继续运行 | 补充词表文件后重启 |
+| jieba 词典异常 | Service 构造抛 `ImportError` | 检查 jieba 安装 |
+
+**设计意图**：构造时失败在启动期暴露，比运行时悄然降级更安全。
+
+---
+
+## 7. 并行执行与性能
+
+### 7.1 执行模型
 
 ```
 analyze_all() 调用
@@ -676,7 +822,7 @@ analyze_all() 调用
     ResultMerger.merge()  (同步，轻量)
 ```
 
-### 6.2 并行策略
+### 7.2 并行策略
 
 | 层级 | 策略 | 说明 |
 |------|------|------|
@@ -690,7 +836,7 @@ analyze_all() 调用
 
 ---
 
-## 7. 分类扩展机制
+## 8. 分类扩展机制
 
 ### 7.1 新增类别的步骤
 
@@ -717,7 +863,7 @@ analyze_all() 调用
 
 ---
 
-## 8. 模型与依赖
+## 9. 模型与依赖
 
 | 模块 | 依赖包 | 模型 | 模型大小 | 加载时机 |
 |------|--------|------|----------|----------|
@@ -739,9 +885,9 @@ analyze_all() 调用
 
 ---
 
-## 9. 测试策略
+## 10. 测试策略
 
-### 9.1 单元测试
+### 10.1 单元测试
 
 | 目标 | Mock 策略 | 关键用例 |
 |------|-----------|----------|
@@ -755,7 +901,7 @@ analyze_all() 调用
 | TextAdaptor | 构造 OCRResult | 正常提取 / 低置信度过滤 / None |
 | ResultMerger | mock SourceAnalysis | 两源合并 / 单源 / 无源 / 去重 |
 
-### 9.2 测试专用策略
+### 10.2 测试专用策略
 
 - 所有 transformers 模型通过 `unittest.mock.patch` 避免实际下载
 - 敏感词表使用临时文件（`tmp_path` fixture）
@@ -763,9 +909,9 @@ analyze_all() 调用
 
 ---
 
-## 10. 与周边模块的集成
+## 11. 与周边模块的集成
 
-### 10.1 上游集成
+### 11.1 上游集成
 
 ```python
 # 预处理层输出 → 文本分析引擎
@@ -778,7 +924,7 @@ text_analysis_result = await text_analysis_service.analyze_all(
 )
 ```
 
-### 10.2 下游集成
+### 11.2 下游集成
 
 `TextAnalysisResult` 将被规则引擎和 AI 引擎消费：
 - **规则引擎**：使用 `violations` 和 `sensitive_words` 做规则匹配
@@ -786,20 +932,20 @@ text_analysis_result = await text_analysis_service.analyze_all(
 
 ---
 
-## 11. 自审清单
+## 12. 自审清单
 
-### 11.1 内部一致性
+### 12.1 内部一致性
 - ✅ `TextAnalysisResult` 字段与各模块输出一致
 - ✅ `TextCategory` 枚举值与配置 `categories` 列表一致
 - ✅ 异常体系与模块划分对应
 - ✅ Service → TextAnalyzer → 各模块 调用链完整
 
-### 11.2 范围检查
+### 12.2 范围检查
 - ✅ 聚焦文本分析：不涉及图像、音频处理
 - ✅ OCR 和语音作为输入来源，不负责提取
 - ✅ 输出到 TextAnalysisResult，不跨层
 
-### 11.3 模糊性检查
+### 12.3 模糊性检查
 - ✅ OCR/语音 None 语义：来源缺失统一为跳过
 - ✅ 模型加载时机：构造时预加载，文档明确标注
 - ✅ 分类扩展路径：枚举 → 配置 → 微调，每步明确
