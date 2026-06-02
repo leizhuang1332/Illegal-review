@@ -1,0 +1,85 @@
+src/illegal_review/data_models.py
+  s_f775a5dd3137d3::t_7c0de1832575b3 7
+  s_f775a5dd3137d3::t_2ca800a5adadde 180-236
+tests/analysis_engine_layer/text_analysis/test_ner.py
+  s_f775a5dd3137d3::t_9c5896f66c60f0 1-52
+tests/analysis_engine_layer/text_analysis/test_sensitive_matcher.py
+  s_f775a5dd3137d3::t_0cdc26819d6ab7 1-78
+tests/analysis_engine_layer/text_analysis/test_merger.py
+  s_f775a5dd3137d3::t_37663c970c7538 1-65
+tests/analysis_engine_layer/text_analysis/test_data_models.py
+  s_f775a5dd3137d3::t_79208488f7c438 699
+  s_f775a5dd3137d3::t_be534e7a1383a2 621-622
+  s_f775a5dd3137d3::t_e6f76a54364527 1-620,623-698,700-704,706-721
+  s_f775a5dd3137d3::t_fa06e2021c802b 705
+tests/analysis_engine_layer/text_analysis/test_classifier.py
+  s_f775a5dd3137d3::t_bb464abe7384b5 1-61
+src/illegal_review/analysis_engine_layer/text_analysis/adaptor.py
+  s_f775a5dd3137d3::t_1974be39fb2bef 1-33
+src/illegal_review/analysis_engine_layer/text_analysis/analyzer.py
+  s_f775a5dd3137d3::t_2616876211b123 1-66
+tests/analysis_engine_layer/text_analysis/test_analyzer.py
+  s_f775a5dd3137d3::t_4d8924ed166ab7 18-38
+  s_f775a5dd3137d3::t_e5bf0475d3d619 1-17,39-58
+tests/analysis_engine_layer/text_analysis/test_semantic.py
+  s_f775a5dd3137d3::t_113067e9118d66 1-45
+pyproject.toml
+  s_f775a5dd3137d3::t_6f58204355f969 37-38
+src/illegal_review/analysis_engine_layer/text_analysis/classifier.py
+  s_f775a5dd3137d3::t_3c49e2953baa48 1-57
+tests/analysis_engine_layer/text_analysis/test_exceptions.py
+  s_f775a5dd3137d3::t_d815d90c341332 1-48
+src/illegal_review/analysis_engine_layer/text_analysis/semantic.py
+  s_f775a5dd3137d3::t_447b6826636d12 1-40
+tests/analysis_engine_layer/text_analysis/test_adaptor.py
+  s_f775a5dd3137d3::t_43bf356106f7ec 1-51
+tests/analysis_engine_layer/text_analysis/test_models.py
+  s_f775a5dd3137d3::t_6b0141e73be187 1-13
+src/illegal_review/analysis_engine_layer/text_analysis/sensitive_matcher.py
+  s_f775a5dd3137d3::t_f3a6eb67b32932 1-162
+src/illegal_review/analysis_engine_layer/text_analysis/exceptions.py
+  s_f775a5dd3137d3::t_da663f10836227 1-29
+src/illegal_review/analysis_engine_layer/text_analysis/ner.py
+  s_f775a5dd3137d3::t_f50b195d58d82d 1-108
+tests/analysis_engine_layer/text_analysis/test_preprocessor.py
+  s_f775a5dd3137d3::t_0f385c9d91f5a7 1-38
+src/illegal_review/analysis_engine_layer/text_analysis/merger.py
+  s_f775a5dd3137d3::t_65dae610056411 1-31,34-40,43-66
+  s_f775a5dd3137d3::t_c7b66eac7f0416 32-33,41-42
+src/illegal_review/config/settings.py
+  s_f775a5dd3137d3::t_9ce5e776b20ef8 111-112,114-116,118-121,123-136
+tests/analysis_engine_layer/text_analysis/test_sentiment.py
+  s_f775a5dd3137d3::t_f1ba4a6cb4afb2 1-41
+src/illegal_review/analysis_engine_layer/text_analysis/service.py
+  s_f775a5dd3137d3::t_755c94de34c12f 1-59
+src/illegal_review/analysis_engine_layer/text_analysis/__init__.py
+  s_f775a5dd3137d3::t_ac890899956c1c 6-12,14-17
+src/illegal_review/analysis_engine_layer/text_analysis/sentiment.py
+  s_f775a5dd3137d3::t_f008792375a6ae 40,43,49,65
+  s_f775a5dd3137d3::t_7c6018f50ec9fe 41,54,56,59,61,67
+  s_f775a5dd3137d3::t_a328f1fb7bcdf4 1-39,42,44-48,50-53,55,57-58,60,62-64,66
+tests/analysis_engine_layer/text_analysis/test_service.py
+  s_f775a5dd3137d3::t_15ebebd5627023 1-55
+src/illegal_review/analysis_engine_layer/text_analysis/preprocessor.py
+  s_f775a5dd3137d3::t_e5cd01507f66e6 19
+  s_f775a5dd3137d3::t_f4a785a9a1d1bf 47
+  s_f775a5dd3137d3::t_ea95e75326208b 1-18,20-46,48-66
+src/illegal_review/analysis_engine_layer/text_analysis/models.py
+  s_f775a5dd3137d3::t_b03daa57858b70 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d491da3cd7917ead89b69285d8e2bb39d99123bb",
+  "prompts": {},
+  "sessions": {
+    "s_f775a5dd3137d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "40da5f04-0c38-485d-b682-28c4fc5cfba6",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
