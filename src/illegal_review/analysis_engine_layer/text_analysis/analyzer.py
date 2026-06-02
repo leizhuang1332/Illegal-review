@@ -25,14 +25,23 @@ class TextAnalyzer:
         self._ner = NERecognizer(config)
         self._classifier = TextClassifier(config)
 
+    async def _run_safe(self, fn, *args):
+        """统一调用同步/异步可调用对象：
+        - 同步 → 通过 asyncio.to_thread 避免阻塞事件循环
+        - 异步（AsyncMock 等）→ 直接 await
+        """
+        if asyncio.iscoroutinefunction(fn):
+            return await fn(*args)
+        return await asyncio.to_thread(fn, *args)
+
     async def analyze(self, text: str, source: str) -> SourceAnalysis:
         """完整分析流水线：预处理 → 5模块并行 → SourceAnalysis"""
-        cleaned = self._preprocessor.process(text)
+        cleaned = await asyncio.to_thread(self._preprocessor.process, text)
 
         results = await asyncio.gather(
             self._semantic.encode(cleaned.text),
-            self._sensitive.match_all(cleaned.text),
-            self._sentiment.analyze(cleaned.text),
+            self._run_safe(self._sensitive.match_all, cleaned.text),
+            self._run_safe(self._sentiment.analyze, cleaned.text),
             self._ner.recognize(cleaned.text),
             self._classifier.classify(cleaned.text),
             return_exceptions=True,
