@@ -69,3 +69,5 @@ docker-compose.override.yml
 *.onnx
 *.bin
 models/
+
+.pytest_cache/
