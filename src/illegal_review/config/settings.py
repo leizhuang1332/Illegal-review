@@ -108,9 +108,32 @@ class AudioAnalysisConfig:
 @dataclass
 class TextAnalysisConfig:
     """文本分析引擎配置"""
+
+    # 模型
     bert_model: str = "bert-base-chinese"
+    classifier_model_path: Optional[str] = None
+
+    # 敏感词
     sensitive_word_list_path: str = "config/sensitive_words.txt"
+    sensitive_fuzzy_match_enabled: bool = True
+    sensitive_fuzzy_threshold: float = 0.8
+
+    # 分析功能开关
     sentiment_analysis_enabled: bool = True
+    ner_enabled: bool = True
+
+    # 分类
+    categories: List[str] = field(
+        default_factory=lambda: ["porn", "violence", "political", "ad", "copyright", "normal"]
+    )
+    classifier_threshold: float = 0.5
+
+    # OCR 输入
+    ocr_confidence_threshold: float = 0.5
+    ocr_max_text_length: int = 5000
+
+    # 批处理
+    max_text_length: int = 10000
 
 
 @dataclass

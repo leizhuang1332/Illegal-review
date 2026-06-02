@@ -4,6 +4,7 @@
 定义系统中使用的核心数据结构
 """
 
+from enum import Enum
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
@@ -121,15 +122,6 @@ class AudioAnalysisResult(BaseModel):
     features: Dict[str, Any] = Field(description="音频特征")
 
 
-class TextAnalysisResult(BaseModel):
-    """文本分析结果"""
-    video_id: UUID = Field(description="视频标识")
-    semantic_embedding: Optional[List[float]] = Field(description="语义嵌入")
-    sensitive_words: List[str] = Field(description="敏感词列表")
-    sentiment_score: Optional[float] = Field(description="情感分数")
-    entities: List[Dict[str, Any]] = Field(description="实体列表")
-
-
 class RuleEngineResult(BaseModel):
     """规则引擎结果"""
     video_id: UUID = Field(description="视频标识")
@@ -185,3 +177,60 @@ class FeedbackData(BaseModel):
     correction_time: datetime = Field(description="修正时间")
     confidence: float = Field(description="原始置信度")
     violation_type: str = Field(description="违规类型")
+
+
+# 分析引擎层 - 文本分析数据模型
+class TextCategory(str, Enum):
+    """文本分类类别（str+Enum，可序列化为纯字符串）"""
+    PORN = "porn"
+    VIOLENCE = "violence"
+    POLITICAL = "political"
+    AD = "ad"
+    COPYRIGHT = "copyright"
+    NORMAL = "normal"
+
+
+class SensitiveWord(BaseModel):
+    """敏感词匹配结果"""
+    word: str = Field(description="敏感词")
+    start_pos: int = Field(description="起始位置")
+    end_pos: int = Field(description="结束位置")
+    match_type: str = Field(description="匹配方式：exact / fuzzy / regex")
+    category: str = Field(description="敏感词类别")
+
+
+class Entity(BaseModel):
+    """命名实体"""
+    name: str = Field(description="实体名称")
+    type: str = Field(description="类型：person / location / organization / time / other")
+    start_pos: int = Field(description="起始位置")
+    end_pos: int = Field(description="结束位置")
+    confidence: float = Field(description="置信度 0~1")
+
+
+class CategoryResult(BaseModel):
+    """文本分类结果"""
+    category: TextCategory = Field(description="违规类别")
+    confidence: float = Field(description="置信度 0~1")
+    scores: Dict[str, float] = Field(description="各类别概率分布")
+
+
+class SourceAnalysis(BaseModel):
+    """单来源文本分析结果"""
+    source: str = Field(description="来源：ocr / transcript")
+    text_length: int = Field(description="文本长度")
+    semantic_embedding: Optional[List[float]] = Field(default=None, description="语义嵌入 (768维)")
+    sensitive_words: List[SensitiveWord] = Field(default_factory=list, description="敏感词列表")
+    sentiment_score: Optional[float] = Field(default=None, description="情感分数 -1~1")
+    entities: List[Entity] = Field(default_factory=list, description="实体列表")
+    category: Optional[CategoryResult] = Field(default=None, description="分类结果")
+    errors: List[str] = Field(default_factory=list, description="各模块处理错误记录")
+
+
+class TextAnalysisResult(BaseModel):
+    """文本分析结果"""
+    video_id: UUID = Field(description="视频标识")
+    ocr: Optional[SourceAnalysis] = Field(default=None, description="OCR文本分析结果")
+    transcript: Optional[SourceAnalysis] = Field(default=None, description="语音转写分析结果")
+    violations: List[ViolationDetection] = Field(default_factory=list, description="违规检测汇总")
+    processing_stats: Dict[str, float] = Field(default_factory=dict, description="处理统计")
