@@ -73,11 +73,7 @@ async def run_with_video(video_path: str):
 
     t0 = time.perf_counter()
     text_service = TextAnalysisService(cfg.text_analysis)
-    text_result = await text_service.analyze_all(
-        video_id=preprocess_result.input_id,
-        ocr_results=preprocess_result.ocr_results,
-        transcript=preprocess_result.transcript,
-    )
+    text_result = await text_service.analyze_all(preprocess_result)
     elapsed = time.perf_counter() - t0
 
     print(f"  分析耗时: {elapsed:.1f}s")
@@ -89,7 +85,7 @@ async def run_mock():
     """仅文本分析引擎（使用模拟预处理数据）"""
     from src.illegal_review.config.settings import TextAnalysisConfig
     from src.illegal_review.analysis_engine_layer.text_analysis import TextAnalysisService
-    from src.illegal_review.data_models import OCRResult, TextAnalysisResult
+    from src.illegal_review.data_models import OCRResult, TextAnalysisResult, PreprocessingResult
 
     print(f"\n{'='*60}")
     print(f"文本分析引擎 · 模拟数据验证")
@@ -107,8 +103,8 @@ async def run_mock():
 
     print(f"\n[2/3] 执行分析...")
     t0 = time.perf_counter()
-    result = await service.analyze_all(
-        video_id=uuid4(),
+    prep_result = PreprocessingResult(
+        input_id=uuid4(),
         ocr_results=[
             OCRResult(text="免费领取毒品", confidence=0.95, bbox=None, frame_index=0),
             OCRResult(text="联系微信", confidence=0.80, bbox=None, frame_index=1),
@@ -116,6 +112,7 @@ async def run_mock():
         ],
         transcript="我非常愤怒，这个平台全是骗人的，大家千万不要上当",
     )
+    result = await service.analyze_all(prep_result)
     elapsed = time.perf_counter() - t0
     print(f"  分析耗时: {elapsed:.2f}s")
 
@@ -168,11 +165,7 @@ async def run_mock_preprocess():
 
     print("\n[2/2] 文本分析引擎...")
     text_service = TextAnalysisService(cfg.text_analysis)
-    text_result = await text_service.analyze_all(
-        video_id=preprocess_result.input_id,
-        ocr_results=preprocess_result.ocr_results,
-        transcript=preprocess_result.transcript,
-    )
+    text_result = await text_service.analyze_all(preprocess_result)
 
     print(f"  OCR: {'有' if text_result.ocr else 'None'}")
     print(f"  语音: {'有' if text_result.transcript else 'None'}")

@@ -25,7 +25,7 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 
 from src.illegal_review.config.settings import TextAnalysisConfig
 from src.illegal_review.analysis_engine_layer.text_analysis import TextAnalysisService
-from src.illegal_review.data_models import OCRResult, TextCategory
+from src.illegal_review.data_models import OCRResult, TextCategory, PreprocessingResult
 
 
 async def main():
@@ -54,14 +54,15 @@ async def main():
     print("\n[2/4] 场景 A：OCR 含敏感词 + 语音正常")
     sys.stdout.flush()
 
-    result_a = await service.analyze_all(
-        video_id=uuid4(),
+    prep_result = PreprocessingResult(
+        input_id=uuid4(),
         ocr_results=[
             OCRResult(text="免费领取毒品", confidence=0.95, bbox=None, frame_index=0),
             OCRResult(text="联系客服微信xxx", confidence=0.80, bbox=None, frame_index=1),
         ],
         transcript="今天我们来讨论一下正常的内容审核流程和技术方案",
     )
+    result_a = await service.analyze_all(prep_result)
 
     print(f"  OCR 敏感词: {[w.word for w in result_a.ocr.sensitive_words]}")
     print(f"  OCR 分类: {result_a.ocr.category.category.value if result_a.ocr.category else 'N/A'}")
@@ -77,13 +78,14 @@ async def main():
     print("\n[3/4] 场景 B：仅 OCR 文本（无语音）")
     sys.stdout.flush()
 
-    result_b = await service.analyze_all(
-        video_id=uuid4(),
+    prep_result = PreprocessingResult(
+        input_id=uuid4(),
         ocr_results=[
             OCRResult(text="赌博网站上线啦", confidence=0.90, bbox=None, frame_index=0),
         ],
         transcript=None,
     )
+    result_b = await service.analyze_all(prep_result)
 
     print(f"  OCR 敏感词: {[w.word for w in result_b.ocr.sensitive_words]}")
     print(f"  语音结果: {result_b.transcript}")  # 应为 None
@@ -95,11 +97,12 @@ async def main():
     print("\n[4/4] 场景 C：仅语音文本（无 OCR）")
     sys.stdout.flush()
 
-    result_c = await service.analyze_all(
-        video_id=uuid4(),
+    prep_result = PreprocessingResult(
+        input_id=uuid4(),
         ocr_results=None,
         transcript="我非常愤怒，这个平台太糟糕了，全是骗子",
     )
+    result_c = await service.analyze_all(prep_result)
 
     print(f"  OCR 结果: {result_c.ocr}")  # 应为 None
     print(f"  语音敏感词: {[w.word for w in result_c.transcript.sensitive_words]}")

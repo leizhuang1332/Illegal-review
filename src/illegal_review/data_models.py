@@ -6,18 +6,18 @@
 
 from enum import Enum
 from pydantic import BaseModel, Field
-from typing import Optional, List, Dict, Any
-from datetime import datetime
+from typing import Optional, List, Dict, Any, Literal
+from datetime import datetime, timezone
 from uuid import UUID
 
 
 # 输入层数据模型
 class VideoMetadata(BaseModel):
     """视频元数据"""
-    duration: float = Field(description="视频时长（秒）")
-    fps: float = Field(description="帧率")
-    width: int = Field(description="宽度（像素）")
-    height: int = Field(description="高度（像素）")
+    duration: float = Field(gt=0, description="视频时长（秒）")
+    fps: float = Field(gt=0, description="帧率")
+    width: int = Field(gt=0, description="宽度（像素）")
+    height: int = Field(gt=0, description="高度（像素）")
     codec: str = Field(description="视频编码格式")
     audio_codec: Optional[str] = Field(default=None, description="音频编码格式")
     bitrate: Optional[int] = Field(default=None, description="比特率（bps）")
@@ -26,8 +26,8 @@ class VideoMetadata(BaseModel):
 class SourceInfo(BaseModel):
     """源信息"""
     original_source: str = Field(description="原始输入（文件路径/URL/流地址）")
-    file_size: Optional[int] = Field(description="文件大小（字节）")
-    content_type: Optional[str] = Field(description="MIME类型")
+    file_size: Optional[int] = Field(default=None, description="文件大小（字节）")
+    content_type: Optional[str] = Field(default=None, description="MIME类型")
 
 
 class SegmentInfo(BaseModel):
@@ -38,15 +38,19 @@ class SegmentInfo(BaseModel):
 
 
 class InputResult(BaseModel):
-    """输入层输出结果"""
+    """输入层输出结果 = 预处理层输入"""
     input_id: UUID = Field(description="唯一标识")
-    input_type: str = Field(description="输入类型：file/url/stream")
+    input_type: Literal["file", "url", "live"] = Field(description="输入类型")
     source_info: SourceInfo = Field(description="源信息")
     video_metadata: Optional[VideoMetadata] = Field(default=None, description="视频元数据")
     temp_path: str = Field(description="临时文件路径")
-    status: str = Field(description="状态：pending/completed/failed")
-    error_message: Optional[str] = Field(default=None, description="错误信息")
-    created_at: datetime = Field(description="创建时间")
+    status: Literal["pending", "processing", "completed", "failed"] = Field(
+        default="pending", description="任务状态"
+    )
+    error: Optional[str] = Field(default=None, description="错误信息")
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc), description="创建时间"
+    )
     processed_at: Optional[datetime] = Field(default=None, description="处理完成时间")
 
 

@@ -12,6 +12,6 @@
 """
 from src.illegal_review.input_layer.router import router as input_router
 from src.illegal_review.input_layer.service import InputService
-from src.illegal_review.input_layer.models import IngestResult, VideoMetadata, SourceInfo
+from src.illegal_review.data_models import InputResult, VideoMetadata, SourceInfo
 
-__all__ = ["input_router", "InputService", "IngestResult", "VideoMetadata", "SourceInfo"]
+__all__ = ["input_router", "InputService", "InputResult", "VideoMetadata", "SourceInfo"]

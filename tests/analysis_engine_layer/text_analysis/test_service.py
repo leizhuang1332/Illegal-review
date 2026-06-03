@@ -3,7 +3,7 @@ from uuid import uuid4
 from unittest.mock import AsyncMock, patch, MagicMock
 from src.illegal_review.analysis_engine_layer.text_analysis.service import TextAnalysisService
 from src.illegal_review.config.settings import TextAnalysisConfig
-from src.illegal_review.data_models import OCRResult, TextAnalysisResult
+from src.illegal_review.data_models import OCRResult, TextAnalysisResult, PreprocessingResult
 
 
 class TestTextAnalysisService:
@@ -38,7 +38,12 @@ class TestTextAnalysisService:
             ocr=mock_result,
         ))
 
-        result = await service.analyze_all(video_id, ocr_results, transcript)
+        prep_result = PreprocessingResult(
+            input_id=video_id,
+            ocr_results=ocr_results,
+            transcript=transcript,
+        )
+        result = await service.analyze_all(prep_result)
         assert isinstance(result, TextAnalysisResult)
         assert result.video_id == video_id
 
@@ -49,7 +54,8 @@ class TestTextAnalysisService:
         service._merger.merge = MagicMock(return_value=TextAnalysisResult(
             video_id=video_id,
         ))
-        result = await service.analyze_all(video_id, ocr_results=None, transcript=None)
+        prep_result = PreprocessingResult(input_id=video_id, ocr_results=None, transcript=None)
+        result = await service.analyze_all(prep_result)
         assert result.video_id == video_id
         assert result.ocr is None
         assert result.transcript is None

@@ -8,7 +8,7 @@ import subprocess
 from dataclasses import dataclass
 from typing import Optional
 from pydantic import ValidationError
-from src.illegal_review.input_layer.models import VideoMetadata
+from src.illegal_review.data_models import VideoMetadata
 
 
 @dataclass

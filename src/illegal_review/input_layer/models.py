@@ -6,6 +6,8 @@ from typing import Optional, List, Literal
 from uuid import UUID
 from datetime import datetime, timezone
 
+from src.illegal_review.data_models import VideoMetadata, SourceInfo, InputResult
+
 
 class UploadOptions(BaseModel):
     """上传选项"""
@@ -41,37 +43,6 @@ class ChunkedUploadCreateRequest(BaseModel):
     file_size: int = Field(gt=0)
     chunk_size: int = Field(default=5 * 1024 * 1024, ge=1 * 1024 * 1024, le=50 * 1024 * 1024)
     checksum_sha256: Optional[str] = Field(default=None)
-
-
-class VideoMetadata(BaseModel):
-    """视频元数据"""
-    duration: float = Field(gt=0, description="视频时长（秒）")
-    fps: float = Field(gt=0, description="帧率")
-    width: int = Field(gt=0, description="宽度（像素）")
-    height: int = Field(gt=0, description="高度（像素）")
-    codec: str = Field(description="视频编码格式")
-    audio_codec: Optional[str] = Field(default=None)
-    bitrate: Optional[int] = Field(default=None)
-
-
-class SourceInfo(BaseModel):
-    """源信息"""
-    original_source: str
-    file_size: Optional[int] = Field(default=None)
-    content_type: Optional[str] = Field(default=None)
-
-
-class IngestResult(BaseModel):
-    """输入层输出结果"""
-    input_id: UUID
-    input_type: Literal["file", "url", "live"]
-    source_info: SourceInfo
-    video_metadata: Optional[VideoMetadata] = None
-    temp_path: str
-    status: Literal["pending", "processing", "completed", "failed"] = "pending"
-    error: Optional[str] = None
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    processed_at: Optional[datetime] = None
 
 
 class TaskStatusResponse(BaseModel):

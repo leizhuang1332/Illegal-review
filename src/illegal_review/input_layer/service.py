@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any
 from uuid import UUID, uuid4
 from datetime import datetime, timezone
 
-from src.illegal_review.input_layer.models import IngestResult, SourceInfo
+from src.illegal_review.data_models import InputResult, SourceInfo
 from src.illegal_review.input_layer.format_checker import check_magic_number, check_extension
 from src.illegal_review.input_layer.metadata import extract_metadata
 from src.illegal_review.input_layer.temp_manager import TempFileManager
@@ -21,12 +21,12 @@ class InputService:
             warning_threshold=config.temp_dir_warning_threshold,
         )
         self.kafka_client = kafka_client
-        self._tasks: Dict[UUID, IngestResult] = {}
+        self._tasks: Dict[UUID, InputResult] = {}
 
     async def handle_file_upload(self, file_path: Path, filename: str,
-                                 checksum_sha256: Optional[str] = None) -> IngestResult:
+                                 checksum_sha256: Optional[str] = None) -> InputResult:
         input_id = uuid4()
-        result = IngestResult(
+        result = InputResult(
             input_id=input_id, input_type="file",
             source_info=SourceInfo(
                 original_source=filename,
@@ -75,7 +75,7 @@ class InputService:
         self.temp_manager.mark_completed(file_path)
         return result
 
-    async def _send_kafka_message(self, result: IngestResult) -> None:
+    async def _send_kafka_message(self, result: InputResult) -> None:
         if not self.kafka_client:
             return
         message = {
@@ -91,7 +91,7 @@ class InputService:
         except Exception as e:
             logger.error(f"Kafka send failed: {e}")
 
-    async def get_task_status(self, input_id: UUID) -> Optional[IngestResult]:
+    async def get_task_status(self, input_id: UUID) -> Optional[InputResult]:
         return self._tasks.get(input_id)
 
     async def cancel_task(self, input_id: UUID) -> bool:
