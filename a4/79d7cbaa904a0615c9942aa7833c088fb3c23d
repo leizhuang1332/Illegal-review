@@ -1,0 +1,21 @@
+config/sensitive_words.txt
+  s_f775a5dd3137d3::t_8179f1c24632a7 1-11
+scripts/verify_text_analysis.py
+  s_f775a5dd3137d3::t_de1ed47c26c501 1-120
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a479d7cbaa904a0615c9942aa7833c088fb3c23d",
+  "prompts": {},
+  "sessions": {
+    "s_f775a5dd3137d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "40da5f04-0c38-485d-b682-28c4fc5cfba6",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
