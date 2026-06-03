@@ -1,0 +1,55 @@
+src/illegal_review/data_models.py
+  s_a01f7b432b841b::t_7260e221a978f2 17-20
+  s_a01f7b432b841b::t_80d879849b1879 29-30
+  s_a01f7b432b841b::t_ef0db1952913bc 41,43,47-53
+  s_a01f7b432b841b::t_0c628c139fbc84 9-10
+src/illegal_review/input_layer/metadata.py
+  s_a01f7b432b841b::t_6593231b34f26a 11
+scripts/integration_test.py
+  s_a01f7b432b841b::t_66d45733a5242c 76
+  s_a01f7b432b841b::t_615bb120ebd3ba 168
+  s_a01f7b432b841b::t_426b2f28a74583 88,106-107,115
+src/illegal_review/input_layer/service.py
+  s_a01f7b432b841b::t_0fbf8217010a06 24,27,29,78,94
+  s_a01f7b432b841b::t_59c508fea6729d 7
+src/illegal_review/input_layer/__init__.py
+  s_a01f7b432b841b::t_d482ad0cb16e1a 17
+  s_a01f7b432b841b::t_1da16fb69fc5be 15
+docs/superpowers/plans/2026-06-03-parameter-alignment.md
+  s_a01f7b432b841b::t_0e0ec57f102009 240
+  s_a01f7b432b841b::t_c264feeda8fd4c 231-237,239,241-242
+  s_a01f7b432b841b::t_2f18868e6dd447 87
+  s_a01f7b432b841b::t_d794e7bb9a6892 1-86,88-230,238,243-379
+src/illegal_review/input_layer/models.py
+  s_a01f7b432b841b::t_b093a2caa47073 9-10
+src/illegal_review/analysis_engine_layer/text_analysis/service.py
+  s_a01f7b432b841b::t_b9c1242dbeed2f 4
+  s_a01f7b432b841b::t_906f818d7e2b97 24,26,29,31,38,40,54
+tests/analysis_engine_layer/text_analysis/test_service.py
+  s_a01f7b432b841b::t_20b1133b5028b4 41-46
+  s_a01f7b432b841b::t_d3592488ba0b1f 6
+  s_a01f7b432b841b::t_14f0c2817be80b 57-58
+docs/superpowers/specs/2026-06-03-parameter-alignment-design.md
+  s_a01f7b432b841b::t_10460a575f990f 1-204
+scripts/verify_text_analysis.py
+  s_a01f7b432b841b::t_7cbdfb84033bc7 28
+  s_a01f7b432b841b::t_b7b96fc132d1b6 81-82,88
+  s_a01f7b432b841b::t_ca67b51d7c717e 100-101,105
+  s_a01f7b432b841b::t_8f443891532855 57-58,65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d38f1f6b18e55f1d00b86b5f343e5643e7af9d41",
+  "prompts": {},
+  "sessions": {
+    "s_a01f7b432b841b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b9d8a180-1f4f-4c10-b470-1ca199232c8d",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
