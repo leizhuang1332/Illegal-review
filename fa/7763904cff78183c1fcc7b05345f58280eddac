@@ -1,0 +1,19 @@
+scripts/integration_test.py
+  s_f775a5dd3137d3::t_9b2c195e7d3e3c 1-48,51-236
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "fa7763904cff78183c1fcc7b05345f58280eddac",
+  "prompts": {},
+  "sessions": {
+    "s_f775a5dd3137d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "40da5f04-0c38-485d-b682-28c4fc5cfba6",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "leizhuang <lorcan.lei@jtexpress.com>"
+    }
+  }
+}
