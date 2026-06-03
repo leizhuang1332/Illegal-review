@@ -1,0 +1,11 @@
+# 敏感词列表 - word,category
+毒品,illegal_drugs
+赌博,gambling
+暴力,violence
+色情,porn
+枪支,weapon
+诈骗,fraud
+卖淫,prostitution
+赌博网站,gambling
+代孕,illegal_medical
+迷药,illegal_drugs
